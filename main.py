@@ -59,6 +59,10 @@ async def delete_personagem(personagem_id: int):
         return Response(status_code=status.HTTP_204_NO_CONTENT)
     else:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Personagem não encontrado")
+    
+@app.get("/calcular")
+async def calcular(a: float, b: float):
+    return {"Resultado": a + b}
 
 if __name__ == "__main__":
     import uvicorn
