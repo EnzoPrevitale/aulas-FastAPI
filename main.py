@@ -1,8 +1,14 @@
-from fastapi import FastAPI, HTTPException, status, Response
+from fastapi import FastAPI, HTTPException, status, Response, Depends
 from models import PersonagensToyStory
-from typing import Optional
+from typing import Optional, Any
 
-app = FastAPI()
+app = FastAPI(title="API dos personagens de Toy Story - DS18", version="0.0.1", description="Uma API feita com a DS18 para aprender FastAPI")
+
+def fake_db():
+    try:
+        print("Conectando com o banco")
+    finally:
+        print("Fechando o banco")
 
 personagens = {
     1: {
@@ -24,7 +30,7 @@ async def get():
     return {"Hello": "world"}
 
 @app.get("/personagens")
-async def get_personagens():
+async def get_personagens(db: Any = Depends(fake_db)):
     return personagens
 
 @app.get("/personagens/{personagem_id}")
