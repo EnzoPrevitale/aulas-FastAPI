@@ -37,11 +37,20 @@ async def get_personagem(personagem_id: int):
     
 @app.post("/personagens", status_code=status.HTTP_201_CREATED)
 async def post_personagem(personagem: Optional[PersonagensToyStory] = None):
-    next_id = len(personagens + 1)
+    next_id = len(personagens) + 1
     personagens[next_id] = personagem
     del personagem.id
     return personagem
 
+@app.put("/personagens/{personagem_id}", status_code=status.HTTP_202_ACCEPTED)
+async def put_personagem(personagem_id:int, personagem: PersonagensToyStory):
+    if personagem_id in personagem:
+        personagens[personagem_id] = personagem
+        personagem.id = personagem_id
+        del personagem.id
+        return personagem
+    else:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Personagem não encontrado")
 
 if __name__ == "__main__":
     import uvicorn
