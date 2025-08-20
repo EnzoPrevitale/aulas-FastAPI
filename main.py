@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI, HTTPException, status, Response
 from models import PersonagensToyStory
 from typing import Optional
 
@@ -49,6 +49,14 @@ async def put_personagem(personagem_id:int, personagem: PersonagensToyStory):
         personagem.id = personagem_id
         del personagem.id
         return personagem
+    else:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Personagem não encontrado")
+    
+@app.delete("/personagens/{personagem_id}")
+async def delete_personagem(personagem_id: int):
+    if personagem_id in personagens:
+        del personagens[personagem_id]
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
     else:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Personagem não encontrado")
 
